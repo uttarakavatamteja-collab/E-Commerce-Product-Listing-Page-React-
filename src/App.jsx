@@ -10,7 +10,6 @@ const App = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedProduct, setSelectedProduct] = useState(null);
 
-  // Requirement: Buttons for categories
   const categories = useMemo(() => [
     'All',
     'electronics',
@@ -19,16 +18,35 @@ const App = () => {
     "women's clothing"
   ], []);
 
-  // Requirement 3: Use the custom hook
-  const { filteredProducts, loading, error, refetch } = useProducts(selectedCategory, searchQuery);
+  const { filteredProducts, loading, error, refetch, isDemoMode } = useProducts(selectedCategory, searchQuery);
 
   if (loading) return <LoadingSpinner />;
-  if (error) return <ErrorMessage message={error} onRetry={refetch} />;
+  
+  // Only show error screen if we have no fallback products
+  if (error && filteredProducts.length === 0) return <ErrorMessage message={error} onRetry={refetch} />;
 
   return (
-    <div className="min-h-screen w-full py-12 px-4 sm:px-6 lg:px-8 bg-slate-950 overflow-x-hidden">
+    <div className="min-h-screen w-full py-12 px-4 sm:px-6 lg:px-8 bg-slate-950 overflow-x-hidden transition-colors duration-500">
       <div className="max-w-7xl mx-auto">
         
+        {/* Fallback Banner for API Outage Awareness */}
+        {isDemoMode && (
+          <div className="mb-8 flex items-center justify-center gap-3 p-4 bg-amber-500/10 border border-amber-500/20 rounded-3xl animate-in slide-in-from-top-4 duration-500">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-amber-500" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+            </svg>
+            <span className="text-amber-500 font-bold text-sm tracking-wide uppercase">
+              Demo Mode: External API Unreachable. Using Local Samples.
+            </span>
+            <button 
+              onClick={refetch}
+              className="ml-4 px-4 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-500 rounded-xl text-xs font-black transition-all active:scale-95"
+            >
+              RETRY API
+            </button>
+          </div>
+        )}
+
         {/* Header Section */}
         <header className="mb-16 text-center animate-in fade-in slide-in-from-top-10 duration-1000">
           <h1 className="text-5xl md:text-7xl font-black mb-4 bg-gradient-to-r from-indigo-500 via-blue-400 to-indigo-500 bg-clip-text text-transparent">
@@ -39,17 +57,16 @@ const App = () => {
           </p>
         </header>
 
-        {/* Controls Section (Category Filters + Search) */}
+        {/* Controls Section */}
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 mb-16 glass p-8 rounded-[40px] shadow-2xl border border-white/5 animate-in fade-in slide-in-from-left-10 duration-1000 delay-200">
           
-          {/* Category Filter Group */}
           <div className="flex flex-wrap items-center justify-center gap-3 w-full lg:w-auto">
             {categories.map((category) => (
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
                 className={`px-6 py-3 rounded-2xl text-sm font-bold capitalize transition-all duration-300 border ${
-                  selectedCategory === category
+                  selectedCategory.toLowerCase() === category.toLowerCase()
                     ? 'bg-indigo-600 text-white border-indigo-400 shadow-lg shadow-indigo-600/30'
                     : 'bg-white/5 text-slate-400 border-white/5 hover:bg-white/10 hover:text-white'
                 }`}
@@ -59,7 +76,6 @@ const App = () => {
             ))}
           </div>
 
-          {/* Real-time Search Bar */}
           <div className="relative w-full max-w-md">
             <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -76,7 +92,7 @@ const App = () => {
           </div>
         </div>
 
-        {/* Products Responsive Grid */}
+        {/* Products Grid */}
         {filteredProducts.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {filteredProducts.map((product) => (
@@ -99,12 +115,10 @@ const App = () => {
           </div>
         )}
 
-        {/* Footer */}
         <footer className="mt-24 pt-12 border-t border-white/5 text-center text-slate-600 text-sm">
-          <p>© 2026 KALKI LUXE. A Performance Assessment for Uttarakavatam Teja.</p>
+          <p>© 2026 KALKI LUXE. Professional E-commerce Assessment.</p>
         </footer>
 
-        {/* Product Modal (Requirements: Large img, Details, Description, ESC, Click outside) */}
         {selectedProduct && (
           <ProductModal 
             product={selectedProduct} 
