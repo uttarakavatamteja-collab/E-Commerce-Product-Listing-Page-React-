@@ -4,6 +4,7 @@ import LoadingSpinner from './components/LoadingSpinner';
 import ErrorMessage from './components/ErrorMessage';
 import ProductCard from './components/ProductCard';
 import ProductModal from './components/ProductModal';
+import Hero from './components/Hero';
 
 const App = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -31,44 +32,48 @@ const App = () => {
         
         {/* Fallback Banner for API Outage Awareness */}
         {isDemoMode && (
-          <div className="mb-8 flex items-center justify-center gap-3 p-4 bg-amber-500/10 border border-amber-500/20 rounded-3xl animate-in slide-in-from-top-4 duration-500">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-amber-500" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-            </svg>
-            <span className="text-amber-500 font-bold text-sm tracking-wide uppercase">
-              Demo Mode: External API Unreachable. Using Local Samples.
-            </span>
+          <div className="mb-12 flex items-center justify-between gap-4 p-5 bg-amber-500/10 border border-amber-500/20 rounded-[32px] animate-in slide-in-from-top-4 duration-500 backdrop-blur-xl">
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center animate-pulse">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <h4 className="text-amber-500 font-black text-sm uppercase tracking-wider">Demo Mode Active</h4>
+                <p className="text-amber-500/70 text-xs font-bold leading-tight">External API (fakestoreapi.com) is currently unreachable. Using premium local samples.</p>
+              </div>
+            </div>
             <button 
               onClick={refetch}
-              className="ml-4 px-4 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-500 rounded-xl text-xs font-black transition-all active:scale-95"
+              className="px-6 py-2.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-500 rounded-2xl text-xs font-black transition-all active:scale-95 border border-amber-500/20 whitespace-nowrap"
             >
-              RETRY API
+              RETRY LIVE API
             </button>
           </div>
         )}
 
-        {/* Header Section */}
-        <header className="mb-16 text-center animate-in fade-in slide-in-from-top-10 duration-1000">
-          <h1 className="text-5xl md:text-7xl font-black mb-4 bg-gradient-to-r from-indigo-500 via-blue-400 to-indigo-500 bg-clip-text text-transparent">
-            KALKI LUXE
-          </h1>
-          <p className="text-slate-400 text-lg md:text-xl font-medium tracking-wide max-w-2xl mx-auto">
-            Experience premium curated collections with modern e-commerce excellence.
-          </p>
+        {/* Hero Section */}
+        <Hero />
+
+        {/* Header Section (Minimalist) */}
+        <header className="mb-16 flex flex-col items-center text-center">
+            <h2 className="text-3xl font-black text-white mb-2 uppercase tracking-[0.2em]">Curated Collection</h2>
+            <div className="w-24 h-1 bg-indigo-500 rounded-full mb-8"></div>
         </header>
 
         {/* Controls Section */}
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 mb-16 glass p-8 rounded-[40px] shadow-2xl border border-white/5 animate-in fade-in slide-in-from-left-10 duration-1000 delay-200">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 mb-16 glass p-8 rounded-[40px] shadow-2xl border border-white/5 animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-200">
           
           <div className="flex flex-wrap items-center justify-center gap-3 w-full lg:w-auto">
             {categories.map((category) => (
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-6 py-3 rounded-2xl text-sm font-bold capitalize transition-all duration-300 border ${
+                className={`px-8 py-4 rounded-2xl text-sm font-black capitalize transition-all duration-300 border ${
                   selectedCategory.toLowerCase() === category.toLowerCase()
-                    ? 'bg-indigo-600 text-white border-indigo-400 shadow-lg shadow-indigo-600/30'
-                    : 'bg-white/5 text-slate-400 border-white/5 hover:bg-white/10 hover:text-white'
+                    ? 'bg-indigo-600 text-white border-indigo-400 shadow-xl shadow-indigo-600/40 scale-105'
+                    : 'bg-white/5 text-slate-400 border-white/5 hover:bg-white/10 hover:text-white hover:border-white/10'
                 }`}
               >
                 {category}
@@ -76,25 +81,25 @@ const App = () => {
             ))}
           </div>
 
-          <div className="relative w-full max-w-md">
-            <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="relative w-full max-w-md group">
+            <div className="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-slate-500 group-focus-within:text-indigo-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
             <input
               type="text"
-              placeholder="Search by product title..."
+              placeholder="Search products..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-14 pr-6 py-4 bg-white/5 border border-white/5 rounded-2xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all focus:bg-white/10"
+              className="w-full pl-16 pr-8 py-5 bg-white/5 border border-white/5 rounded-3xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:bg-white/10 transition-all font-medium text-lg"
             />
           </div>
         </div>
 
         {/* Products Grid */}
         {filteredProducts.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
             {filteredProducts.map((product) => (
               <ProductCard 
                 key={product.id} 
@@ -104,21 +109,32 @@ const App = () => {
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-24 glass rounded-[40px] animate-in fade-in duration-500">
-            <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mb-6">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="flex flex-col items-center justify-center py-32 glass rounded-[50px] border border-white/5 animate-in zoom-in-95 duration-500">
+            <div className="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center mb-8 border border-white/10">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 className="text-2xl font-bold text-white mb-2">No items found</h3>
-            <p className="text-slate-500 text-lg">Try a different search term or category.</p>
+            <h3 className="text-3xl font-black text-white mb-3">Product Not Found</h3>
+            <p className="text-slate-500 text-xl font-medium">Try refining your search or changing categories.</p>
           </div>
         )}
 
-        <footer className="mt-24 pt-12 border-t border-white/5 text-center text-slate-600 text-sm">
-          <p>© 2026 KALKI LUXE. Professional E-commerce Assessment.</p>
+        {/* Footer */}
+        <footer className="mt-40 mb-12 flex flex-col md:flex-row items-center justify-between gap-8 py-12 border-t border-white/5 px-12 glass rounded-[40px]">
+          <div className="text-center md:text-left">
+            <h3 className="text-2xl font-black text-white mb-2 tracking-tighter">KALKI LUXE</h3>
+            <p className="text-slate-500 font-medium">Elevating the digital shopping experience.</p>
+          </div>
+          <div className="flex gap-8">
+            {['Privacy', 'Terms', 'Support'].map(link => (
+              <a key={link} href="#" className="text-slate-400 hover:text-white transition-colors font-bold text-sm uppercase tracking-widest">{link}</a>
+            ))}
+          </div>
+          <p className="text-slate-600 font-bold text-sm">© 2026 THE ANTIGRAVITY STUDIO</p>
         </footer>
 
+        {/* Modal */}
         {selectedProduct && (
           <ProductModal 
             product={selectedProduct} 
