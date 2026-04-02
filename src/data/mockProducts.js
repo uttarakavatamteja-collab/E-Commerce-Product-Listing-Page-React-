@@ -45,7 +45,7 @@ export const mockProducts = [
     rating: { rate: 4.9, count: 56 }
   },
   {
-    id: 6:
+    id: 6,
     title: "Minimalist Leather Card Holder",
     price: 45.00,
     description: "Full-grain vegetable-tanned leather accessory designed to hold essentials with style and durability. Ages beautifully over time.",
